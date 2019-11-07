@@ -2,7 +2,7 @@
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="18G1012" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="FilmRecord" representedClassName="FilmRecord" codeGenerationType="class">
         <attribute name="filmDescription" optional="YES" attributeType="String"/>
-        <attribute name="filmID" optional="YES" attributeType="String"/>
+        <attribute name="filmID" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
         <attribute name="filmIsFavourite" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="filmName" optional="YES" attributeType="String"/>
         <attribute name="filmPoster" optional="YES" attributeType="String"/>

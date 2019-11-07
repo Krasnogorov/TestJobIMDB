@@ -21,7 +21,11 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         // TODO: change call
         NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1", Callback: { (response, error) in
             if (response != nil) {
+                
                 let parsedResult: FilmList = try! JSONDecoder().decode(FilmList.self, from: response!)
+                for film in parsedResult.items {
+                    self.insertNewObject(film);
+                }
                 // TODO: save it to DB
                 print (parsedResult);
                 print(error as Any);
@@ -53,11 +57,14 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     @objc
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
-        let newEvent = FilmRecord(context: context)
+        let film = sender as! Film;
+        let newFilm = FilmRecord(context: context)
              
         // If appropriate, configure the new managed object.
-        newEvent.filmName = Date().description
-
+        newFilm.filmID = Int64(film.id)
+        newFilm.filmName = film.title
+        newFilm.filmPoster = film.poster
+        newFilm.filmDescription = film.description
         // Save the context.
         do {
             try context.save()
