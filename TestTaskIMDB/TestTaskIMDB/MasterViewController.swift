@@ -17,6 +17,23 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // TODO: change call
+        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1", Callback: { (response, error) in
+            if (response != nil) {
+                let parsedResult: FilmList = try! JSONDecoder().decode(FilmList.self, from: response!)
+                // TODO: save it to DB
+                print (parsedResult);
+                print(error as Any);
+            }
+            else
+            {
+                // TODO: display error
+            }
+        });
+        
+        
+        
         // Do any additional setup after loading the view.
         navigationItem.leftBarButtonItem = editButtonItem
 
@@ -36,10 +53,10 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     @objc
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
-        let newEvent = Event(context: context)
+        let newEvent = FilmRecord(context: context)
              
         // If appropriate, configure the new managed object.
-        newEvent.timestamp = Date()
+        newEvent.filmName = Date().description
 
         // Save the context.
         do {
@@ -106,24 +123,24 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
     }
 
-    func configureCell(_ cell: UITableViewCell, withEvent event: Event) {
-        cell.textLabel!.text = event.timestamp!.description
+    func configureCell(_ cell: UITableViewCell, withEvent film : FilmRecord) {
+        cell.textLabel!.text = film.filmName
     }
 
     // MARK: - Fetched results controller
 
-    var fetchedResultsController: NSFetchedResultsController<Event> {
+    var fetchedResultsController: NSFetchedResultsController<FilmRecord> {
         if _fetchedResultsController != nil {
             return _fetchedResultsController!
         }
         
-        let fetchRequest: NSFetchRequest<Event> = Event.fetchRequest()
+        let fetchRequest: NSFetchRequest<FilmRecord> = FilmRecord.fetchRequest()
         
         // Set the batch size to a suitable number.
         fetchRequest.fetchBatchSize = 20
         
         // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "filmName", ascending: false)
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
@@ -144,7 +161,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         
         return _fetchedResultsController!
     }    
-    var _fetchedResultsController: NSFetchedResultsController<Event>? = nil
+    var _fetchedResultsController: NSFetchedResultsController<FilmRecord>? = nil
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -168,9 +185,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             case .delete:
                 tableView.deleteRows(at: [indexPath!], with: .fade)
             case .update:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! FilmRecord)
             case .move:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! FilmRecord)
                 tableView.moveRow(at: indexPath!, to: newIndexPath!)
             default:
                 return
