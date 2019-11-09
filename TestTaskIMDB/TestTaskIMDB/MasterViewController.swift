@@ -19,30 +19,20 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         super.viewDidLoad()
         
         // TODO: change call
-        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1", Callback: { (response, error) in
+        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1", Callback: { (response, error) in
             if (response != nil) {
                 
                 let parsedResult: FilmList = try! JSONDecoder().decode(FilmList.self, from: response!)
                 for film in parsedResult.items {
                     self.insertNewObject(film);
                 }
-                // TODO: save it to DB
-                print (parsedResult);
-                print(error as Any);
             }
             else
             {
                 // TODO: display error
             }
         });
-        
-        
-        
         // Do any additional setup after loading the view.
-        navigationItem.leftBarButtonItem = editButtonItem
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
@@ -58,6 +48,12 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
         let film = sender as! Film;
+        if ((fetchedResultsController.fetchedObjects?.contains(where: { (record) -> Bool in
+            return record.filmID == film.id
+        }))!)
+        {
+            return
+        }
         let newFilm = FilmRecord(context: context)
              
         // If appropriate, configure the new managed object.
@@ -142,9 +138,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         }
         
         let fetchRequest: NSFetchRequest<FilmRecord> = FilmRecord.fetchRequest()
-        
-        // Set the batch size to a suitable number.
-        fetchRequest.fetchBatchSize = 20
         
         // Edit the sort key as appropriate.
         let sortDescriptor = NSSortDescriptor(key: "filmName", ascending: false)

@@ -22,6 +22,8 @@
 		A5BBFAA42374696E00F191A8 /* Film.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFAA22374696E00F191A8 /* Film.swift */; };
 		A5BBFAA6237477F900F191A8 /* FilmList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFAA5237477F900F191A8 /* FilmList.swift */; };
 		A5BBFAA7237477F900F191A8 /* FilmList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFAA5237477F900F191A8 /* FilmList.swift */; };
+		A5D391A02377509C00C05F98 /* ImageNetworkExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */; };
+		A5D391A12377509C00C05F98 /* ImageNetworkExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +53,7 @@
 		A5BBFA9E2374515500F191A8 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		A5BBFAA22374696E00F191A8 /* Film.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		A5BBFAA5237477F900F191A8 /* FilmList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmList.swift; sourceTree = "<group>"; };
+		A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNetworkExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,6 +123,7 @@
 			isa = PBXGroup;
 			children = (
 				A5BBFA9E2374515500F191A8 /* NetworkManager.swift */,
+				A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -241,6 +245,7 @@
 				A5BBFA7723744B1600F191A8 /* AppDelegate.swift in Sources */,
 				A5BBFAA6237477F900F191A8 /* FilmList.swift in Sources */,
 				A5BBFA7C23744B1600F191A8 /* SceneDelegate.swift in Sources */,
+				A5D391A02377509C00C05F98 /* ImageNetworkExtension.swift in Sources */,
 				A5BBFAA32374696E00F191A8 /* Film.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +257,7 @@
 				A5BBFAA02374515500F191A8 /* NetworkManager.swift in Sources */,
 				A5BBFAA7237477F900F191A8 /* FilmList.swift in Sources */,
 				A5BBFAA42374696E00F191A8 /* Film.swift in Sources */,
+				A5D391A12377509C00C05F98 /* ImageNetworkExtension.swift in Sources */,
 				A5BBFA9323744B1900F191A8 /* TestTaskIMDBTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
