@@ -13,13 +13,46 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
-
-
+    private var _currentPageIndex : Int = 0
+    private var _leftButton : UIBarButtonItem? = nil
+    private var _rightButton : UIBarButtonItem? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        _currentPageIndex = 1
+        MakeRequest()
+        // Do any additional setup after loading the view.
+        if let split = splitViewController {
+            let controllers = split.viewControllers
+            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+        }
         
+        _leftButton = UIBarButtonItem( title : "PrevPage",style:UIBarButtonItem.Style.plain, target: self, action: #selector(leftButtonClicked(_:)))
+        navigationItem.leftBarButtonItem = _leftButton
+        _leftButton!.isEnabled = false
+        
+        _rightButton = UIBarButtonItem(title : "NextPage", style:UIBarButtonItem.Style.plain, target: self, action: #selector(rightButtonClicked(_:)))
+        navigationItem.rightBarButtonItem = _rightButton
+    }
+    
+    @objc func leftButtonClicked(_ sender: Any){
+        if (_currentPageIndex > 1) {
+            _currentPageIndex -= 1
+            MakeRequest()
+        }
+        _leftButton!.isEnabled = (_currentPageIndex != 1)
+        
+    }
+    @objc func rightButtonClicked(_ sender: Any){
+        _currentPageIndex += 1
+        _leftButton!.isEnabled = (_currentPageIndex != 1)
+        MakeRequest()
+    }
+
+    func MakeRequest() {
         // TODO: change call
-        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=1", Callback: { (response, error) in
+        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=\(_currentPageIndex)",
+                                                       Callback: { (response, error) in
             if (response != nil) {
                 
                 let parsedResult: FilmList = try! JSONDecoder().decode(FilmList.self, from: response!)
@@ -32,13 +65,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 // TODO: display error
             }
         });
-        // Do any additional setup after loading the view.
-        if let split = splitViewController {
-            let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
-        }
     }
-
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
@@ -139,8 +166,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         
         let fetchRequest: NSFetchRequest<FilmRecord> = FilmRecord.fetchRequest()
         
-        // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "filmName", ascending: false)
+//        // Edit the sort key as appropriate.
+        let sortDescriptor = NSSortDescriptor(key: "filmIsFavourite", ascending: false)
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
