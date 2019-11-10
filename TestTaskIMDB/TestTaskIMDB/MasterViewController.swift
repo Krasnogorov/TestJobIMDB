@@ -13,21 +13,58 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
 
     var detailViewController: DetailViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
-
-
+    private var _currentPageIndex : Int = 0
+    private var _leftButton : UIBarButtonItem? = nil
+    private var _rightButton : UIBarButtonItem? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        navigationItem.leftBarButtonItem = editButtonItem
-
-        let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(insertNewObject(_:)))
-        navigationItem.rightBarButtonItem = addButton
+        _currentPageIndex = 1
+        MakeRequest()
+        
         if let split = splitViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        
+        _leftButton = UIBarButtonItem( title : "PrevPage",style:UIBarButtonItem.Style.plain, target: self, action: #selector(leftButtonClicked(_:)))
+        navigationItem.leftBarButtonItem = _leftButton
+        _leftButton!.isEnabled = false
+        
+        _rightButton = UIBarButtonItem(title : "NextPage", style:UIBarButtonItem.Style.plain, target: self, action: #selector(rightButtonClicked(_:)))
+        navigationItem.rightBarButtonItem = _rightButton
+    }
+    
+    @objc func leftButtonClicked(_ sender: Any){
+        if (_currentPageIndex > 1) {
+            _currentPageIndex -= 1
+            MakeRequest()
+        }
+        _leftButton!.isEnabled = (_currentPageIndex != 1)
+    }
+    
+    @objc func rightButtonClicked(_ sender: Any){
+        _currentPageIndex += 1
+        _leftButton!.isEnabled = (_currentPageIndex != 1)
+        MakeRequest()
     }
 
+    func MakeRequest() {
+        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=\(_currentPageIndex)",
+                                                       Callback: { (response, error) in
+            if (response != nil) {
+                let parsedResult: FilmList = try! JSONDecoder().decode(FilmList.self, from: response!)
+                for film in parsedResult.items {
+                    self.insertNewObject(film);
+                }
+            }
+            else {
+                let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        });
+    }
     override func viewWillAppear(_ animated: Bool) {
         clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
         super.viewWillAppear(animated)
@@ -36,17 +73,22 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     @objc
     func insertNewObject(_ sender: Any) {
         let context = self.fetchedResultsController.managedObjectContext
-        let newEvent = Event(context: context)
+        let film = sender as! Film;
+        if ((fetchedResultsController.fetchedObjects?.contains(where: { (record) -> Bool in
+            return record.filmID == film.id }))!) {
+            return
+        }
+        let newFilm = FilmRecord(context: context)
              
         // If appropriate, configure the new managed object.
-        newEvent.timestamp = Date()
-
+        newFilm.filmID = Int64(film.id)
+        newFilm.filmName = film.title
+        newFilm.filmPoster = film.poster
+        newFilm.filmDescription = film.description
         // Save the context.
         do {
             try context.save()
         } catch {
-            // Replace this implementation with code to handle the error appropriately.
-            // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
             let nserror = error as NSError
             fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
         }
@@ -60,6 +102,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             let object = fetchedResultsController.object(at: indexPath)
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
+                controller.managedContext = self.managedObjectContext
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
                 controller.navigationItem.leftItemsSupplementBackButton = true
                 detailViewController = controller
@@ -86,7 +129,6 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
         return true
     }
 
@@ -98,37 +140,29 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             do {
                 try context.save()
             } catch {
-                // Replace this implementation with code to handle the error appropriately.
-                // fatalError() causes the application to generate a crash log and terminate. You should not use this function in a shipping application, although it may be useful during development.
                 let nserror = error as NSError
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }
     }
 
-    func configureCell(_ cell: UITableViewCell, withEvent event: Event) {
-        cell.textLabel!.text = event.timestamp!.description
+    func configureCell(_ cell: UITableViewCell, withEvent film : FilmRecord) {
+        cell.textLabel!.text = film.filmName
     }
 
     // MARK: - Fetched results controller
 
-    var fetchedResultsController: NSFetchedResultsController<Event> {
+    var fetchedResultsController: NSFetchedResultsController<FilmRecord> {
         if _fetchedResultsController != nil {
             return _fetchedResultsController!
         }
         
-        let fetchRequest: NSFetchRequest<Event> = Event.fetchRequest()
+        let fetchRequest: NSFetchRequest<FilmRecord> = FilmRecord.fetchRequest()
         
-        // Set the batch size to a suitable number.
-        fetchRequest.fetchBatchSize = 20
-        
-        // Edit the sort key as appropriate.
-        let sortDescriptor = NSSortDescriptor(key: "timestamp", ascending: false)
+        let sortDescriptor = NSSortDescriptor(key: "filmIsFavourite", ascending: false)
         
         fetchRequest.sortDescriptors = [sortDescriptor]
         
-        // Edit the section name key path and cache name if appropriate.
-        // nil for section name key path means "no sections".
         let aFetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.managedObjectContext!, sectionNameKeyPath: nil, cacheName: "Master")
         aFetchedResultsController.delegate = self
         _fetchedResultsController = aFetchedResultsController
@@ -144,7 +178,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         
         return _fetchedResultsController!
     }    
-    var _fetchedResultsController: NSFetchedResultsController<Event>? = nil
+    var _fetchedResultsController: NSFetchedResultsController<FilmRecord>? = nil
 
     func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.beginUpdates()
@@ -168,9 +202,9 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
             case .delete:
                 tableView.deleteRows(at: [indexPath!], with: .fade)
             case .update:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! FilmRecord)
             case .move:
-                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! Event)
+                configureCell(tableView.cellForRow(at: indexPath!)!, withEvent: anObject as! FilmRecord)
                 tableView.moveRow(at: indexPath!, to: newIndexPath!)
             default:
                 return
@@ -180,15 +214,5 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
         tableView.endUpdates()
     }
-
-    /*
-     // Implementing the above methods to update the table view in response to individual changes may have performance implications if a large number of changes are made simultaneously. If this proves to be an issue, you can instead just implement controllerDidChangeContent: which notifies the delegate that all section and object changes have been processed.
-     
-     func controllerDidChangeContent(controller: NSFetchedResultsController) {
-         // In the simplest, most efficient, case, reload the table view.
-         tableView.reloadData()
-     }
-     */
-
 }
 
