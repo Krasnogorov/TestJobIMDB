@@ -1,5 +1,5 @@
 //
-//  MasterViewController.swift
+//  FilmListViewController.swift
 //  TestTaskIMDB
 //
 //  Created by Sergey Krasnogorov on 11/7/19.
@@ -9,9 +9,9 @@
 import UIKit
 import CoreData
 
-class MasterViewController: UITableViewController, NSFetchedResultsControllerDelegate {
+class FilmListViewController: UITableViewController, NSFetchedResultsControllerDelegate {
 
-    var detailViewController: DetailViewController? = nil
+    var detailViewController: FilmDetailsViewController? = nil
     var managedObjectContext: NSManagedObjectContext? = nil
     private var _currentPageIndex : Int = 0
     private var _leftButton : UIBarButtonItem? = nil
@@ -24,7 +24,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         
         if let split = splitViewController {
             let controllers = split.viewControllers
-            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
+            detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? FilmDetailsViewController
         }
         
         _leftButton = UIBarButtonItem( title : "PrevPage",style:UIBarButtonItem.Style.plain, target: self, action: #selector(leftButtonClicked(_:)))
@@ -59,7 +59,8 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
                 }
             }
             else {
-                let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertController.Style.alert)
+                let alert = UIAlertController(title: "Alert", message: error! + NSLocalizedString("Information will be displayed from local database.", comment: ""),
+                                              preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "Ok", style: UIAlertAction.Style.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
             }
@@ -100,7 +101,7 @@ class MasterViewController: UITableViewController, NSFetchedResultsControllerDel
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
             let object = fetchedResultsController.object(at: indexPath)
-                let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
+                let controller = (segue.destination as! UINavigationController).topViewController as! FilmDetailsViewController
                 controller.detailItem = object
                 controller.managedContext = self.managedObjectContext
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem

@@ -9,8 +9,11 @@
 import Foundation
 import UIKit
 
+/**
+    Extension for UIImageView for downloading images with URL or String
+ */
 extension UIImageView {
-    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {  // for swift 4.2 syntax just use ===> mode: UIView.ContentMode
+    func downloaded(from url: URL, contentMode mode: UIView.ContentMode = .scaleAspectFit) {
         contentMode = mode
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard
@@ -24,7 +27,7 @@ extension UIImageView {
             }
         }.resume()
     }
-    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {  // for swift 4.2 syntax just use ===> mode: UIView.ContentMode
+    func downloaded(from link: String, contentMode mode: UIView.ContentMode = .scaleAspectFit) {  
         guard let url = URL(string: link) else { return }
         downloaded(from: url, contentMode: mode)
     }

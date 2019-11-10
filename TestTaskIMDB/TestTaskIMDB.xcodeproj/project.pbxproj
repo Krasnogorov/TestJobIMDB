@@ -10,8 +10,8 @@
 		A5BBFA7723744B1600F191A8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7623744B1600F191A8 /* AppDelegate.swift */; };
 		A5BBFA7A23744B1600F191A8 /* TestTaskIMDB.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7823744B1600F191A8 /* TestTaskIMDB.xcdatamodeld */; };
 		A5BBFA7C23744B1600F191A8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7B23744B1600F191A8 /* SceneDelegate.swift */; };
-		A5BBFA7E23744B1600F191A8 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7D23744B1600F191A8 /* MasterViewController.swift */; };
-		A5BBFA8023744B1600F191A8 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7F23744B1600F191A8 /* DetailViewController.swift */; };
+		A5BBFA7E23744B1600F191A8 /* FilmListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7D23744B1600F191A8 /* FilmListViewController.swift */; };
+		A5BBFA8023744B1600F191A8 /* FilmDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFA7F23744B1600F191A8 /* FilmDetailsViewController.swift */; };
 		A5BBFA8323744B1600F191A8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5BBFA8123744B1600F191A8 /* Main.storyboard */; };
 		A5BBFA8523744B1800F191A8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A5BBFA8423744B1800F191A8 /* Assets.xcassets */; };
 		A5BBFA8823744B1800F191A8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A5BBFA8623744B1800F191A8 /* LaunchScreen.storyboard */; };
@@ -24,6 +24,7 @@
 		A5BBFAA7237477F900F191A8 /* FilmList.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5BBFAA5237477F900F191A8 /* FilmList.swift */; };
 		A5D391A02377509C00C05F98 /* ImageNetworkExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */; };
 		A5D391A12377509C00C05F98 /* ImageNetworkExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */; };
+		A5D391A323789D1B00C05F98 /* NetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D391A223789D1B00C05F98 /* NetworkConnection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,8 +42,8 @@
 		A5BBFA7623744B1600F191A8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A5BBFA7923744B1600F191A8 /* TestTaskIMDB.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TestTaskIMDB.xcdatamodel; sourceTree = "<group>"; };
 		A5BBFA7B23744B1600F191A8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A5BBFA7D23744B1600F191A8 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		A5BBFA7F23744B1600F191A8 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		A5BBFA7D23744B1600F191A8 /* FilmListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmListViewController.swift; sourceTree = "<group>"; };
+		A5BBFA7F23744B1600F191A8 /* FilmDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmDetailsViewController.swift; sourceTree = "<group>"; };
 		A5BBFA8223744B1600F191A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A5BBFA8423744B1800F191A8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A5BBFA8723744B1800F191A8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -54,6 +55,7 @@
 		A5BBFAA22374696E00F191A8 /* Film.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Film.swift; sourceTree = "<group>"; };
 		A5BBFAA5237477F900F191A8 /* FilmList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilmList.swift; sourceTree = "<group>"; };
 		A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageNetworkExtension.swift; sourceTree = "<group>"; };
+		A5D391A223789D1B00C05F98 /* NetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkConnection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,8 +101,8 @@
 				A5BBFA9D2374509F00F191A8 /* Networking */,
 				A5BBFA7623744B1600F191A8 /* AppDelegate.swift */,
 				A5BBFA7B23744B1600F191A8 /* SceneDelegate.swift */,
-				A5BBFA7D23744B1600F191A8 /* MasterViewController.swift */,
-				A5BBFA7F23744B1600F191A8 /* DetailViewController.swift */,
+				A5BBFA7D23744B1600F191A8 /* FilmListViewController.swift */,
+				A5BBFA7F23744B1600F191A8 /* FilmDetailsViewController.swift */,
 				A5BBFA8123744B1600F191A8 /* Main.storyboard */,
 				A5BBFA8423744B1800F191A8 /* Assets.xcassets */,
 				A5BBFA8623744B1800F191A8 /* LaunchScreen.storyboard */,
@@ -124,6 +126,7 @@
 			children = (
 				A5BBFA9E2374515500F191A8 /* NetworkManager.swift */,
 				A5D3919F2377509C00C05F98 /* ImageNetworkExtension.swift */,
+				A5D391A223789D1B00C05F98 /* NetworkConnection.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -239,9 +242,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				A5BBFA9F2374515500F191A8 /* NetworkManager.swift in Sources */,
-				A5BBFA7E23744B1600F191A8 /* MasterViewController.swift in Sources */,
+				A5BBFA7E23744B1600F191A8 /* FilmListViewController.swift in Sources */,
+				A5D391A323789D1B00C05F98 /* NetworkConnection.swift in Sources */,
 				A5BBFA7A23744B1600F191A8 /* TestTaskIMDB.xcdatamodeld in Sources */,
-				A5BBFA8023744B1600F191A8 /* DetailViewController.swift in Sources */,
+				A5BBFA8023744B1600F191A8 /* FilmDetailsViewController.swift in Sources */,
 				A5BBFA7723744B1600F191A8 /* AppDelegate.swift in Sources */,
 				A5BBFAA6237477F900F191A8 /* FilmList.swift in Sources */,
 				A5BBFA7C23744B1600F191A8 /* SceneDelegate.swift in Sources */,
