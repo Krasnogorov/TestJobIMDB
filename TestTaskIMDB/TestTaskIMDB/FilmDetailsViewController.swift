@@ -1,5 +1,5 @@
 //
-//  DetailViewController.swift
+//  FilmDetailsViewController.swift
 //  TestTaskIMDB
 //
 //  Created by Sergey Krasnogorov on 11/7/19.
@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class DetailViewController: UIViewController {
+class FilmDetailsViewController: UIViewController {
 
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var posterImage : UIImageView!

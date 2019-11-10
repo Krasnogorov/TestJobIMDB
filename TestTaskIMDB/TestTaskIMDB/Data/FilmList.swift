@@ -7,14 +7,16 @@
 //
 
 import Foundation
-
-struct  FilmList: Decodable {
+/**
+    Class for decoding response from IMDB
+ */
+class FilmList: Decodable {
     enum CodingKeys: String, CodingKey {
         case results
     }
     let items: [Film]
     
-    init(from decoder: Decoder) throws {
+    required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.items = try container.decode([Film].self, forKey: .results)
     }

@@ -10,7 +10,7 @@ import Foundation
 
 /**
   Class-singleton for making network requests
- **/
+ */
 class NetworkManager
 {
     /**
@@ -29,6 +29,9 @@ class NetworkManager
      */
     public func MakeGetRequest(urlPath: String, Callback: @escaping(Data?, String?) -> Void )
     {
+        if (!NetworkConnection.isConnectedToNetwork()) {
+            Callback(nil, NSLocalizedString("It is no internet connection", comment: ""));
+        }
         let url = URL(string: urlPath)!
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in
             Callback(data, error?.localizedDescription);
