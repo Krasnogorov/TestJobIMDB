@@ -50,7 +50,7 @@ class FilmListViewController: UITableViewController, NSFetchedResultsControllerD
     }
 
     func MakeRequest() {
-        NetworkManager.SharedInstance().MakeGetRequest(urlPath: "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page=\(_currentPageIndex)",
+        NetworkManager.SharedInstance().MakeGetRequest(urlPath: NetworkManager.BASE_WEB_ADDRESS + "\(_currentPageIndex)",
                                                        Callback: { (response, error) in
             if (response != nil) {
                 let parsedResult: FilmList = try! JSONDecoder().decode(FilmList.self, from: response!)

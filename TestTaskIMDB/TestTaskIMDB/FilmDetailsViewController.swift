@@ -43,7 +43,7 @@ class FilmDetailsViewController: UIViewController {
                 button.setTitle(NSLocalizedString(detail.filmIsFavourite ? "Remove from favourite" : "Add to favourite", comment: ""), for: .normal)
             }
             if let image = posterImage {
-                image.downloaded(from: "https://image.tmdb.org/t/p/w500"+detail.filmPoster!)
+                image.downloaded(from: NetworkManager.IMAGE_WEB_ADDRESS + detail.filmPoster!)
             }
             
         }

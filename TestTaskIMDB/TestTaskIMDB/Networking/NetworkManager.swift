@@ -13,6 +13,8 @@ import Foundation
  */
 class NetworkManager
 {
+    public static let BASE_WEB_ADDRESS : String = "https://api.themoviedb.org/3/discover/movie?api_key=479155cdc996e85e410ccdcf46568480&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=true&page="
+    public static let IMAGE_WEB_ADDRESS : String = "https://image.tmdb.org/t/p/w500"
     /**
         Instance of manager
      */
@@ -30,7 +32,7 @@ class NetworkManager
     public func MakeGetRequest(urlPath: String, Callback: @escaping(Data?, String?) -> Void )
     {
         if (!NetworkConnection.isConnectedToNetwork()) {
-            Callback(nil, NSLocalizedString("It is no internet connection", comment: ""));
+            Callback(nil, NSLocalizedString("It is no internet connection.", comment: ""));
         }
         let url = URL(string: urlPath)!
         let task = URLSession.shared.dataTask(with: url) {(data, response, error) in

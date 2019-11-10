@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  TestTaskIMDB
+
+  Created by Sergey Krasnogorov on 11/10/19.
+  Copyright © 2019 Sergey Krasnogorov. All rights reserved.
+*/
+"It is no internet connection." = "It is no internet connection.";
+"Information will be displayed from local database." = "Information will be displayed from local database.";
+"Remove from favourite" = "Remove from favourite";
+"Add to favourite" = "Add to favourite";
