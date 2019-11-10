@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class DetailViewController: UIViewController {
 
@@ -16,6 +17,18 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var favouriteButton : UIButton!
 
     private var _record : FilmRecord? = nil
+    var managedContext : NSManagedObjectContext? {
+        didSet {
+            print ("did set ")
+        }
+    }
+    var detailItem: FilmRecord? {
+        didSet {
+            _record = detailItem!
+            // Update the view.
+            configureView()
+        }
+    }
     
     func configureView() {
         // Update the user interface for the detail item.
@@ -27,7 +40,7 @@ class DetailViewController: UIViewController {
                 description.text = detail.filmDescription
             }
             if let button = favouriteButton {
-                button.titleLabel?.text = NSLocalizedString(detail.filmIsFavourite ? "Remove from favourite" : "Add to favourite", comment: "")
+                button.setTitle(NSLocalizedString(detail.filmIsFavourite ? "Remove from favourite" : "Add to favourite", comment: ""), for: .normal)
             }
             if let image = posterImage {
                 image.downloaded(from: "https://image.tmdb.org/t/p/w500"+detail.filmPoster!)
@@ -38,21 +51,19 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
         configureView()
     }
 
-    var detailItem: FilmRecord? {
-        didSet {
-            _record = detailItem!
-            // Update the view.
-            configureView()
-        }
-    }
-    
     @IBAction func favouriteButtonClicked(_ sender: Any) {
-        _record!.filmIsFavourite != _record!.filmIsFavourite;
-        favouriteButton.titleLabel?.text = NSLocalizedString(_record!.filmIsFavourite ? "Remove from favourite" : "Add to favourite", comment: "")
+        let value : Bool = !_record!.filmIsFavourite;
+        _record?.setValue(value, forKey: "filmIsFavourite")
+        do {
+            try self.managedContext?.save()
+            favouriteButton.setTitle(NSLocalizedString(value ? "Remove from favourite" : "Add to favourite", comment: ""), for: .normal)
+        }
+        catch {
+            print (error)
+        }
     }
 }
 
